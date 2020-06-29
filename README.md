@@ -6,6 +6,7 @@ from flask import Flask
 from uuid import uuid4
 
 #首先定义区块
+
 class Block:
 
     def __init__(self, index, proof_no, prev_hash, data, timestamp=None):
@@ -16,6 +17,7 @@ class Block:
         self.timestamp = timestamp or time.time()
 
 #计算区块哈希
+
     def calculate_hash(self):
         block_of_string = "{}{}{}{}{}".format(self.index, self.proof_no,
                                               self.prev_hash, self.data,
@@ -24,12 +26,14 @@ class Block:
         return hashlib.sha256(block_of_string.encode()).hexdigest()
 
 #返回区块内容
+
     def __repr__(self):
         return "{} - {} - {} - {} - {}".format(self.index, self.proof_no,
                                                self.prev_hash, self.data,
                                                self.timestamp)
 
-#
+#区块链定义
+
 class BlockChain:
 
     def __init__(self):
@@ -38,9 +42,11 @@ class BlockChain:
         self.nodes = set()
         self.construct_genesis()
 #创世区块
+
     def construct_genesis(self):
         self.construct_block(proof_no=0, prev_hash=0x04436e9146643e8c2c8cca9e071c793aa0c6d31)
 #构造新的区块
+
     def construct_block(self, proof_no, prev_hash):
         block = Block(
             index=len(self.chain),
@@ -54,6 +60,7 @@ class BlockChain:
         return block
 
 #添加新的交易
+
     def new_data(self, sender, recipient, quantity):
         self.current_data.append({
             'sender': sender,
@@ -63,6 +70,7 @@ class BlockChain:
         return True
 
 #工作量证明
+
     def proof_of_work(self,last_proof):
         proof_no = 0
         while BlockChain.verifying_proof(proof_no, last_proof) is False:
@@ -79,6 +87,7 @@ class BlockChain:
         return guess_hash[:4] == "0000"
 
 #返回最新区块
+
     def latest_block(self):
         return self.chain[-1]
 
@@ -86,26 +95,32 @@ class BlockChain:
 
 
 #页面编辑接口
+
 app = Flask(__name__)
 
 # 生成节点ID
+
 node_identifier = str(uuid4()).replace('-', '')
 
 # 实例化
+
 blockchain = BlockChain()
 
 #挖矿
+
 @app.route('/mine', methods=['GET'])
 
 def mine():
     return "We'll mine a new Block"
 
 #添加新交易
+
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
     return "We'll add a new transaction"
 
 #生成新区块
+
 @app.route('/chain', methods=['GET'])
 def full_chain():
     response = {
