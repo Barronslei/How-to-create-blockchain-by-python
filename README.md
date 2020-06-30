@@ -1,14 +1,22 @@
 # How-to-create-blockchain-by-python
 
 import hashlib
+
 import time
+
 from flask import Flask
+
 from flask import jsonify
+
 from flask import Response
+
 #from uuid import uuid4
+
 import json
 
+
 class Blockchain:
+
     def __init__(self):
         self.current_transactions = []
         self.chain = []
@@ -59,12 +67,15 @@ class Blockchain:
         return guess_hash[:4] == "0000"
 
 blockchain=Blockchain()
+
 app = Flask(__name__)
+
 @app.route('/chain',methods=['GET'])
 def full_chain():
     response={'chain':blockchain.chain,
               'length':len(blockchain.chain)
               }
     return jsonify(response)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
