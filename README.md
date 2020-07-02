@@ -177,6 +177,7 @@ def mine():
     return jsonify(response), 200
     
 @app.route('/nodes/register', methods=['POST'])
+
 def register_nodes():
     values = request.get_json()
 
@@ -194,7 +195,9 @@ def register_nodes():
     return jsonify(response), 201
 
 @app.route('/nodes/resolve', methods=['GET'])
+
 def consensus():
+    
     replaced = blockchain.resolve_conflicts()
 
     if replaced:
